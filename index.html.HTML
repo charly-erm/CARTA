@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cartita para ti</title>
+  <style>
+    body {
+      margin: 0;
+      background: #fdf6f0;
+      font-family: 'Georgia', serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .contenedor {
+      text-align: center;
+      position: relative;
+      width: 90%;
+      max-width: 420px;
+    }
+
+    .sobre {
+      background: linear-gradient(to bottom, #d2b48c, #c8a97e);
+      border: 3px solid #6e4a2e;
+      border-radius: 12px;
+      padding: 30px 15px 20px;
+      position: relative;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+      overflow: hidden;
+      min-height: 200px;
+      transition: min-height 0.4s ease;
+    }
+
+    .sobre.abierto {
+      min-height: 460px;
+    }
+
+    .texto-sobre {
+      font-size: 1.6em;
+      font-weight: bold;
+      color: #4b2e1e;
+      margin-top: 10px;
+      transition: opacity 0.4s ease;
+    }
+
+    .sello {
+      width: 70px;
+      height: 70px;
+      background: crimson;
+      color: white;
+      font-weight: bold;
+      border-radius: 50%;
+      line-height: 70px;
+      margin: 20px auto 10px;
+      font-size: 1.2em;
+      box-shadow: 0 0 8px #00000080;
+      transition: opacity 0.4s ease;
+      z-index: 1;
+    }
+
+    .sello.oculto {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .hoja {
+      display: none;
+      background: #fff;
+      border: 2px solid #6e4a2e;
+      border-radius: 10px;
+      padding: 20px;
+      margin: 0 auto;
+      text-align: left;
+      font-size: 1em;
+      line-height: 1.5em;
+      color: #333;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      right: 10px;
+      bottom: 10px;
+      z-index: 0;
+      overflow-y: auto;
+      animation: expand 0.4s ease forwards;
+    }
+
+    .bailarina {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 2px solid #d2b48c;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+      animation: spin 4s linear infinite paused;
+    }
+
+    .bailarina img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .hoja::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .hoja::-webkit-scrollbar-thumb {
+      background: #ccc;
+      border-radius: 3px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg);}
+      100% { transform: rotate(360deg);}
+    }
+  </style>
+</head>
+<body>
+
+<div class="contenedor" ondblclick="toggleCarta()">
+  <div class="sobre" id="sobre">
+    <div class="texto-sobre" id="textoEncima">Cartita para ti<br>Te amo</div>
+    <div class="sello" id="sello">♥</div>
+    <div class="hoja" id="hoja">
+      <div class="bailarina" id="bailarina">
+        <img src="FOTO.jpg" alt="bailarina musical"/>
+      </div>
+      <strong>Para ti, mi amor:</strong><br><br>
+      Desde que llegaste a mi vida, todo tiene más luz, más color, más sentido. Tu sonrisa es mi paz, tus ojos mi hogar, y tus abrazos el lugar donde todo está bien. No hay un solo día en que no agradezca al destino por cruzarme contigo.<br><br>
+      Eres mi persona favorita, mi alegría constante y mi mejor pensamiento al despertar y al dormir. No necesito mil razones para amarte, con una sola basta: tú eres tú… y eso es todo lo que necesito.<br><br>
+      Gracias por ser tan tú, tan única, tan hermosa por dentro y por fuera. Te amo con todo mi corazón, y siempre lo haré.<br><br>
+      Y si algún día te sientes sola, recuerda que dentro de ti habita una fuerza inmensa. Eres más fuerte de lo que crees, y capaz de lograr todo lo que te propongas. Confío plenamente en ti, creo en cada uno de tus pasos, y sé que aunque a veces el camino parezca difícil, tú puedes con eso y más.<br><br>
+      No estás sola, aunque lo parezca. Yo estoy contigo, siempre, desde el corazón. Y pase lo que pase, nunca olvides lo valiosa, increíble y poderosa que eres.<br><br>
+      <strong>Eres mi motivo, mi calma, mi inspiración. Siempre voy a cuidarte, impulsarte y amarte con todo lo que soy. Esta cartita es un pedacito de mi alma entregado con amor, para recordarte que cada día que existes en mi vida, es un día que vale la pena vivir.</strong>
+    </div>
+  </div>
+</div>
+
+<audio id="melodia" src="CARTA.mp3" loop></audio>
+
+<script>
+  const hoja = document.getElementById('hoja');
+  const textoEncima = document.getElementById('textoEncima');
+  const sello = document.getElementById('sello');
+  const melodia = document.getElementById('melodia');
+  const bailarina = document.getElementById('bailarina');
+  const sobre = document.getElementById('sobre');
+  let abierta = false;
+
+  function toggleCarta() {
+    abierta = !abierta;
+
+    hoja.style.display = abierta ? 'block' : 'none';
+    textoEncima.style.opacity = abierta ? '0' : '1';
+    sello.classList.toggle('oculto', abierta);
+    sobre.classList.toggle('abierto', abierta);
+
+    if (abierta) {
+      melodia.currentTime = 0;
+      melodia.play();
+      bailarina.style.animationPlayState = "running";
+    } else {
+      melodia.pause();
+      bailarina.style.animationPlayState = "paused";
+    }
+  }
+</script>
+
+</body>
+</html>
